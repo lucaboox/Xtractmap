@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Map with Leaflet</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%; /* Set the height to 100% of the viewport height */
+            width: 100%;
+            background-color: white;
+        }
+        .dark-mode #map {
+            background-color: black !important;
+        }
+        .leaflet-control-darkmode {
+            padding: 6px 8px;
+            background-color: white;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            position: absolute;
+            bottom: 22.5px;
+            left: 115px;
+            transform: translateX(-50%);
+            z-index: 1001; /* Ensure it's above the map */
+        }
+        .leaflet-control-darkmode.dark-mode {
+            background-color: black;
+            color: white;
+        }
+        .leaflet-control-darkmode.dark-mode span {
+            margin-right: 6px;
+        }
+        .legend-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: none;
+            padding: 10px;
+            z-index: 1000;
+        }
+        .legend-container img {
+            max-width: 310px; /* Adjust as needed */
+            max-height: 310px; /* Adjust as needed */
+        }
+        .leaflet-bottom.leaflet-left {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div class="legend-container">
+        <img src="https://images2.imgbox.com/38/4c/yDbsWBtT_o.png" alt="Legend">
+    </div>
+    <!-- Checkbox input for dark mode -->
+    <div class="leaflet-control-darkmode">
+        <span>Dark Mode</span>
+        <input type="checkbox" id="darkModeSwitch">
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var imageUrl = 'https://images2.imgbox.com/a9/d0/yk7UxeKb_o.png';
+        var imageBounds = [[0, 0], [6456, 7272]]; // Image size: height x width
+
+        // Calculate the aspect ratio of the image
+        var aspectRatio = 7272 / 6456;
+
+        // Calculate the maximum width and height of the map to maintain the aspect ratio
+        var maxWidth = window.innerWidth;
+        var maxHeight = window.innerHeight;
+
+        if (maxWidth / maxHeight > aspectRatio) {
+            maxWidth = maxHeight * aspectRatio;
+        } else {
+            maxHeight = maxWidth / aspectRatio;
+        }
+
+        var map = L.map('map', {
+            maxZoom: 4,
+            minZoom: -2.8,
+            setZoom: 20,
+            maxBoundsViscosity: 1.0,
+            maxBounds: imageBounds,
+            crs: L.CRS.Simple,
+            zoomControl: false
+        }).setView([0, 0], -5);
+
+        L.imageOverlay(imageUrl, imageBounds).addTo(map);
+
+        map.setMaxBounds(imageBounds); // Restrict the map to the size of the image
+        map.on('drag', function () {
+            map.panInsideBounds(imageBounds, { animate: false });
+        });
+
+        // Add zoom control to bottom left
+        L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+        // Retrieve dark mode setting from local storage
+        var darkModeEnabled = localStorage.getItem('darkModeEnabled');
+        if (darkModeEnabled === 'true') {
+            document.getElementById('map').style.backgroundColor = 'black';
+            document.getElementById('darkModeSwitch').checked = true;
+        }
+
+        // Event listener for dark mode switch
+        document.getElementById('darkModeSwitch').addEventListener('change', function (event) {
+            if (event.target.checked) {
+                document.getElementById('map').style.backgroundColor = 'black';
+                localStorage.setItem('darkModeEnabled', 'true');
+            } else {
+                document.getElementById('map').style.backgroundColor = 'white';
+                localStorage.setItem('darkModeEnabled', 'false');
+            }
+        });
+    </script>
+</body>
+</html>
