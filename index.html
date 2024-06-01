@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Map with Leaflet</title>
+    <title>Xtract Map Reforger</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         html, body {
@@ -19,17 +20,23 @@
         .dark-mode #map {
             background-color: black !important;
         }
+    
         .leaflet-control-darkmode {
+            user-select: none;
+            transform: scale(0.9) !important;
             padding: 6px 8px;
             background-color: white;
+            border: 1px solid black;
             border-radius: 2px;
             font-size: 14px;
             font-weight: bold;
             font-family: Arial, sans-serif;
             cursor: pointer;
             position: absolute;
-            bottom: 22.5px;
-            left: 115px;
+            align-items: center;
+            justify-content: center; /* Center the text horizontally */
+            bottom: 20.5px;
+            left: 51px;
             transform: translateX(-50%);
             z-index: 1001; /* Ensure it's above the map */
         }
@@ -40,6 +47,33 @@
         .leaflet-control-darkmode.dark-mode span {
             margin-right: 6px;
         }
+        .leaflet-control-legend {
+            justify-content: center !important;
+            user-select: none;
+            transform: scale(0.9) !important;
+            padding: 6px 8px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            position: absolute;
+            align-items: center;
+            justify-content: center; /* Center the text horizontally */
+            bottom: 51.5px;
+            left: 50px;
+            transform: translateX(-50%);
+            z-index: 1001; /* Ensure it's above the map */
+        }
+        .leaflet-control-legend.dark-mode {
+            background-color: black;
+            color: white;
+        }
+        .leaflet-control-legend.dark-mode span {
+            margin-right: 6px;
+        }
         .legend-container {
             position: absolute;
             top: 10px;
@@ -47,6 +81,13 @@
             background: none;
             padding: 10px;
             z-index: 1000;
+        }
+        .leaflet-control-darkmode label, .leaflet-control-legend label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
         }
         .legend-container img {
             max-width: 310px; /* Adjust as needed */
@@ -59,18 +100,30 @@
 </head>
 <body>
     <div id="map"></div>
-    <div class="legend-container">
-        <img src="https://images2.imgbox.com/38/4c/yDbsWBtT_o.png" alt="Legend">
+    <div class="custom-attribution">Made by Lucaboox</div>
+    <div id="map"></div>
+    <div class="legend-container" id="legendContainer">
+        <img src="Legend-Transparent.png" alt="Legend">
     </div>
     <!-- Checkbox input for dark mode -->
     <div class="leaflet-control-darkmode">
-        <span>Dark Mode</span>
-        <input type="checkbox" id="darkModeSwitch">
+        <label for="darkModeSwitch">
+            <span>Dark Mode</span>
+            <input type="checkbox" id="darkModeSwitch">
+        </label>
+    </div>
+    <!-- Checkbox input for legend toggle -->
+    <div class="leaflet-control-legend">
+        <label for="legendSwitch">
+            <span>Show Legend</span>
+            <input type="checkbox" id="legendSwitch" checked>
+        </label>
     </div>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
         var imageUrl = 'Arland-map-HQ.png';
-        var imageBounds = [[0, 0], [6456, 7272]]; // Image size: height x width
+        var imageBounds = [[0, 0], [6456, 7272]]; // Image size: height x width 6456, 7272
+        var imageLimit = [[0, 0], [6456, 7272]];
 
         // Calculate the aspect ratio of the image
         var aspectRatio = 7272 / 6456;
@@ -89,6 +142,8 @@
             maxZoom: 4,
             minZoom: -2.8,
             setZoom: 20,
+            zoomSnap: 0,
+            wheelPxPerZoomLevel: 70,
             maxBoundsViscosity: 1.0,
             maxBounds: imageBounds,
             crs: L.CRS.Simple,
@@ -97,13 +152,13 @@
 
         L.imageOverlay(imageUrl, imageBounds).addTo(map);
 
-        map.setMaxBounds(imageBounds); // Restrict the map to the size of the image
+        map.setMaxBounds(imageLimit); // Restrict the map to the size of the image
         map.on('drag', function () {
-            map.panInsideBounds(imageBounds, { animate: false });
+            map.panInsideBounds(imageLimit, { animate: false });
         });
 
         // Add zoom control to bottom left
-        L.control.zoom({ position: 'bottomleft' }).addTo(map);
+        L.control.zoom({ position: 'bottomleft'}).addTo(map);
 
         // Retrieve dark mode setting from local storage
         var darkModeEnabled = localStorage.getItem('darkModeEnabled');
@@ -122,6 +177,34 @@
                 localStorage.setItem('darkModeEnabled', 'false');
             }
         });
+
+        // Event listener for legend toggle switch
+        document.getElementById('legendSwitch').addEventListener('change', function (event) {
+            var legendContainer = document.getElementById('legendContainer');
+            if (event.target.checked) {
+                legendContainer.style.display = 'block';
+                localStorage.setItem('legendEnabled', 'true');
+            } else {
+                legendContainer.style.display = 'none';
+                localStorage.setItem('legendEnabled', 'false');
+            }
+        });
+
+        // Retrieve legend visibility setting from local storage
+        var legendEnabled = localStorage.getItem('legendEnabled');
+        if (legendEnabled === 'false') {
+            document.getElementById('legendContainer').style.display = 'none';
+            document.getElementById('legendSwitch').checked = false;
+        }
+// Find the element with the class 'leaflet-control-attribution'
+var attributionElement = document.querySelector('.leaflet-control-attribution');
+
+// Create a new text node for the text " Chicken"
+var textNode = document.createTextNode(' | By Lucaboox on Discord');
+
+// Append the text node to the attribution element
+attributionElement.appendChild(textNode);
+        
     </script>
 </body>
 </html>
