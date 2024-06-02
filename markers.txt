@@ -1,0 +1,21 @@
+5089.901530, 2994.346111,images/Extract.png,Harbor Bunker Extract,HARBOR<br>BUNKER,,,,,,,,
+4549.782871, 4272.909498,images/Extract.png,Under Bridge Extract,UNDER<br>BRIDGE,,
+1694.049582, 4211.538852,images/Extract.png,Forest Ruin Extract,FOREST<br>RUIN,,
+1943.649603, 5225.684690,images/Extract.png,Smuggler Boat Extract,SMUGLER<br>BOAT,,
+2764.660705, 3393.892623,images/PExtract.png,Uboat Extract<br>Cost $2000,UBOAT,,,,-105,65 
+4582.828416, 5375.853440,images/PExtract.png,Carrier Extract<br>Cost $2500,CARRIER,,,,20,65
+2550.100041, 5105.945707,images/tier1.png,Tier 1 Boss Church Boss<br>Has Lots of crates in the church,,,2602.646135,5002.871835,
+3887.157569, 5561.834910,images/tier2.png,Tier 2 Boss Sniper Boss<br>Has Lots of crates in the church,,images/tier2photo.jpg,3994.502993,5640.087698,
+4430.891563, 5300.777694,images/tier3.png,Tier 3 Boss Harbor Boss<br>Has Lots of crates in the church,,,4346.074724,5209.406861,
+4214.239803, 2963.823904,images/helicrash.png,Helicrash at airfield has multiple weapon crates,,,
+4186.853097, 4421.211764,images/helicrash.png,Helicrash has a few crates lots of AI ,,,4027.967124,4419.487658,,
+2357.636769, 4176.064176,images/factory.png,Factory building has a few crates,,,,,,
+2892.176191, 4994.746518,images/tent.png,Military tents has a few crates and some AI,,,,,
+4429.669183, 2749.180698,images/atc.png,ATC tower has a few crates and some AI,,,,,,
+3624.165974, 2759.962726,images/military.png,Military base has barracks with crates and AI,,,,,,,,,.4
+3816.001994, 4382.577254,images/military.png,Military building has a few crates,,,,,,,,,.4
+
+
+
+
+
