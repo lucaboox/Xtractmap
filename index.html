@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xtract Map Reforger</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+
+.leaflet-popup-content-wrapper {
+
+    padding: 1px;
+    text-align: center;
+    border-radius: 0px !important;
+}
+
+        #visitor-counter-container {
+            display: none;
         }
-        #map {
-            height: 100%; /* Set the height to 100% of the viewport height */
-            width: 100%;
-            background-color: white;
-        }
-        .dark-mode #map {
-            background-color: black !important;
-        }
-    
-        .leaflet-control-darkmode {
+        .leaflet-control-mapSwitch {
             user-select: none;
             transform: scale(0.9) !important;
             padding: 6px 8px;
@@ -35,8 +36,128 @@
             position: absolute;
             align-items: center;
             justify-content: center; /* Center the text horizontally */
-            bottom: 20.5px;
-            left: 51px;
+            bottom: 96%;
+            right: 1px;
+            transform: translateX(-50%);
+            z-index: 1001; /* Ensure it's above the map */
+        }
+        .leaflet-control-mapSwitch label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
+        }
+        .leaflet-control-custom {
+            opacity: 0.5 !important; /* Adjust the opacity as needed */
+            top: 30px;
+        }
+        .marker-label-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Center the label vertically and horizontally */
+            display: flex;
+            flex-direction: column; /* Stack label lines vertically */
+        }
+        .marker-label {
+            color: white;
+            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+            font-size: 25px;
+            line-height: 1;
+            font-family: "Oxanium", sans-serif;
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap;
+            pointer-events: none;
+            margin-bottom: 5px; /* Adjust as necessary */
+        }
+        .marker-icon {
+            width: 32px;
+            height: 32px;
+        }
+        .custom-icon-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .custom-icon-container .marker-label-container {
+            position: absolute;
+            top: -60px; /* Adjust this value to move the label above the marker icon */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .toast {
+            visibility: hidden;
+            position: fixed;
+            bottom: 10px;
+            font-family: Arial, sans-serif;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            color: #000000;
+            text-align: center;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%; /* Set the height to 100% of the viewport height */
+            width: 100%;
+            background-color: white;
+        }
+        .dark-mode #map {
+            background-color: black !important;
+        }
+        .leaflet-control-toggleMarkers {
+            user-select: none;
+            transform: scale(0.9) !important;
+            padding: 6px 8px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            position: absolute;
+            align-items: center;
+            justify-content: center; /* Center the text horizontally */
+            bottom: 159.5px;
+            left: 14px;
+            transform: translateX(-50%);
+            z-index: 1001; /* Ensure it's above the map */
+        }
+        .leaflet-control-darkmode {
+            justify-content: center !important;
+            user-select: none;
+            transform: scale(0.9) !important;
+            padding: 6px 8px;
+            background-color: white;
+            border: 1px solid black;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            position: absolute;
+            align-items: center;
+            justify-content: center; /* Center the text horizontally */
+            bottom: 90.5px;
+            left: 15px;
             transform: translateX(-50%);
             z-index: 1001; /* Ensure it's above the map */
         }
@@ -62,8 +183,8 @@
             position: absolute;
             align-items: center;
             justify-content: center; /* Center the text horizontally */
-            bottom: 51.5px;
-            left: 50px;
+            bottom: 125px;
+            left: 14px;
             transform: translateX(-50%);
             z-index: 1001; /* Ensure it's above the map */
         }
@@ -101,8 +222,9 @@
 <body>
     <div id="map"></div>
     <div class="legend-container" id="legendContainer">
-        <img src="Legend-Transparent.png" alt="Legend">
+        <img src="images/Legend-Transparent.png" alt="Legend">
     </div>
+
     <!-- Checkbox input for dark mode -->
     <div class="leaflet-control-darkmode">
         <label for="darkModeSwitch">
@@ -110,99 +232,336 @@
             <input type="checkbox" id="darkModeSwitch">
         </label>
     </div>
+
     <!-- Checkbox input for legend toggle -->
     <div class="leaflet-control-legend">
-        <label for="legendSwitch">
-            <span>Show Legend</span>
-            <input type="checkbox" id="legendSwitch" checked>
+    <label for="legendSwitch">
+        <span>Show Legend</span>
+        <input type="checkbox" id="legendSwitch" checked>
+    </label>
+</div>
+
+<!-- Checkbox input to toggle markers -->
+<div class="leaflet-control-toggleMarkers">
+    <label for="toggleMarkersCheckbox">
+        <span>Toggle Markers</span>
+        <input type="checkbox" id="toggleMarkersCheckbox">
+    </label>
+</div>
+
+    <!-- Visitor counter container with box-like appearance -->
+    <div id="visitor-counter-container">
+        <script type="text/javascript" src="https://www.free-counters.org/count/fn1o"></script><br>
+        <a href='https://www.free-counters.org/'>Counter</a> <script type='text/javascript' src='https://whomania.com/ctr?id=a16d7270463374772100b267a326c06c3cf169fb'></script>
+    </div>
+
+    <div class="leaflet-control-mapSwitch">
+        <label for="mapImageSwitch">
+            <span>Switch Map</span>
+            <input type="checkbox" id="mapImageSwitch">
         </label>
     </div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        var imageUrl = 'Arland-map-HQ.png';
-        var imageBounds = [[0, 0], [6456, 7272]]; // Image size: height x width 6456, 7272
-        var imageLimit = [[0, 0], [6456, 7272]];
 
-        // Calculate the aspect ratio of the image
-        var aspectRatio = 7272 / 6456;
+    <!-- Toast Notification -->
+    <div class="toast" id="toastNotification"></div>
 
-        // Calculate the maximum width and height of the map to maintain the aspect ratio
-        var maxWidth = window.innerWidth;
-        var maxHeight = window.innerHeight;
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    //var imageUrl = 'Arland-map-HQ.png';
+    var imageUrl1 = 'images/Arland-map-HQ test.png';
+    var imageUrl2 = 'images/Arland-map-HQ.png';
+    var imageBounds = [[0, 0], [6456, 7272]]; // Image size: height x width 6456, 7272
+    var imageLimit = [[0, 0], [6456, 7272]];
 
-        if (maxWidth / maxHeight > aspectRatio) {
-            maxWidth = maxHeight * aspectRatio;
-        } else {
-            maxHeight = maxWidth / aspectRatio;
-        }
+    // Calculate the aspect ratio of the image
+    var aspectRatio = 7272 / 6456;
 
-        var map = L.map('map', {
-            maxZoom: 4,
-            minZoom: -2.8,
-            setZoom: 20,
-            zoomSnap: 0,
-            wheelPxPerZoomLevel: 70,
-            maxBoundsViscosity: 1.0,
-            maxBounds: imageBounds,
-            crs: L.CRS.Simple,
-            zoomControl: false
-        }).setView([0, 0], -5);
+    // Calculate the maximum width and height of the map to maintain the aspect ratio
+    var maxWidth = window.innerWidth;
+    var maxHeight = window.innerHeight;
 
-        L.imageOverlay(imageUrl, imageBounds).addTo(map);
+    if (maxWidth / maxHeight > aspectRatio) {
+        maxWidth = maxHeight * aspectRatio;
+    } else {
+        maxHeight = maxWidth / aspectRatio;
+    }
 
+    var map = L.map('map', {
+        maxZoom: 4,
+        minZoom: -2.8,
+        setZoom: 20,
+        zoomSnap: 0,
+        wheelPxPerZoomLevel: 70,
+        maxBoundsViscosity: 1.0,
+        maxBounds: imageBounds,
+        crs: L.CRS.Simple,
+        zoomControl: false
+    }).setView([0, 0], -5);
+
+    var currentImage = imageUrl1;
+        var imageOverlay = L.imageOverlay(currentImage, imageBounds).addTo(map);
         map.setMaxBounds(imageLimit); // Restrict the map to the size of the image
         map.on('drag', function () {
             map.panInsideBounds(imageLimit, { animate: false });
         });
 
-        // Add zoom control to bottom left
-        L.control.zoom({ position: 'bottomleft'}).addTo(map);
+    // Add zoom control to bottom left
+    L.control.zoom({ position: 'bottomleft', select: 'none' }).addTo(map);
 
-        // Retrieve dark mode setting from local storage
-        var darkModeEnabled = localStorage.getItem('darkModeEnabled');
-        if (darkModeEnabled === 'true') {
+    // Retrieve dark mode setting from local storage
+    var darkModeEnabled = localStorage.getItem('darkModeEnabled');
+    if (darkModeEnabled === 'true') {
+        document.getElementById('map').style.backgroundColor = 'black';
+        document.getElementById('darkModeSwitch').checked = true;
+    }
+
+    // Event listener for dark mode switch
+    document.getElementById('darkModeSwitch').addEventListener('change', function (event) {
+        if (event.target.checked) {
             document.getElementById('map').style.backgroundColor = 'black';
-            document.getElementById('darkModeSwitch').checked = true;
+            localStorage.setItem('darkModeEnabled', 'true');
+        } else {
+            document.getElementById('map').style.backgroundColor = 'white';
+            localStorage.setItem('darkModeEnabled', 'false');
         }
+    });
 
-        // Event listener for dark mode switch
-        document.getElementById('darkModeSwitch').addEventListener('change', function (event) {
+    // Event listener for legend toggle switch
+    document.getElementById('legendSwitch').addEventListener('change', function (event) {
+        var legendContainer = document.getElementById('legendContainer');
+        if (event.target.checked) {
+            legendContainer.style.display = 'block';
+            localStorage.setItem('legendEnabled', 'true');
+        } else {
+            legendContainer.style.display = 'none';
+            localStorage.setItem('legendEnabled', 'false');
+        }
+    });
+
+    // Retrieve legend visibility setting from local storage
+    var legendEnabled = localStorage.getItem('legendEnabled');
+    if (legendEnabled === 'false') {
+        document.getElementById('legendContainer').style.display = 'none';
+        document.getElementById('legendSwitch').checked = false;
+    }
+
+    // Find the element with the class 'leaflet-control-attribution'
+    var attributionElement = document.querySelector('.leaflet-control-attribution');
+
+        // Add custom attribution text
+        L.control.attribution({
+            prefix: false
+        }).addAttribution('<a href="https://ko-fi.com/lucaboox" target="_blank">Donate</a>').addTo(map);
+
+    // Create a new text node
+    var textNode = document.createTextNode(' | Site By Lucaboox');
+
+    // Append the text node to the attribution element
+    attributionElement.appendChild(textNode);
+
+    // Define the Vistor Control
+    var visitorCounterControl = L.control({position: 'bottomright'});
+
+        // Add the HTML to the control
+        visitorCounterControl.onAdd = function(map) {
+            var container = L.DomUtil.create('div', 'leaflet-control-custom');
+            container.innerHTML = document.getElementById('visitor-counter-container').innerHTML;
+            return container;
+        };
+
+        // Add the control to the map
+        visitorCounterControl.addTo(map);
+
+                // Event listener for map image switch
+                document.getElementById('mapImageSwitch').addEventListener('change', function(event) {
             if (event.target.checked) {
-                document.getElementById('map').style.backgroundColor = 'black';
-                localStorage.setItem('darkModeEnabled', 'true');
+                currentImage = imageUrl2;
             } else {
-                document.getElementById('map').style.backgroundColor = 'white';
-                localStorage.setItem('darkModeEnabled', 'false');
+                currentImage = imageUrl1;
+            }
+            map.removeLayer(imageOverlay);
+            imageOverlay = L.imageOverlay(currentImage, imageBounds).addTo(map);
+        });
+    </script>
+
+</script>
+
+<script>
+    // Load markers data from markers.txt
+    $(document).ready(function() {
+        $.ajax({
+            url: 'markers.txt',
+            dataType: 'text',
+            success: function(data) {
+                createMarkersAndLinesFromData(data);
             }
         });
+    });
 
-        // Event listener for legend toggle switch
-        document.getElementById('legendSwitch').addEventListener('change', function (event) {
-            var legendContainer = document.getElementById('legendContainer');
-            if (event.target.checked) {
-                legendContainer.style.display = 'block';
-                localStorage.setItem('legendEnabled', 'true');
-            } else {
-                legendContainer.style.display = 'none';
-                localStorage.setItem('legendEnabled', 'false');
-            }
-        });
+    // Calculate the number of line breaks in the label
+    function countLineBreaks(labelText) {
+        return labelText.split("<br>").length - 1;
+    }
 
-        // Retrieve legend visibility setting from local storage
-        var legendEnabled = localStorage.getItem('legendEnabled');
-        if (legendEnabled === 'false') {
-            document.getElementById('legendContainer').style.display = 'none';
-            document.getElementById('legendSwitch').checked = false;
+    // Function to adjust marker label position based on line breaks
+    function adjustMarkerLabelPosition(marker) {
+        var markerLabel = marker.getElement().querySelector('.marker-label-container');
+        var numLineBreaks = countLineBreaks(marker.options.labelText);
+        var offset = 25 * numLineBreaks; // Adjust this value as needed
+        markerLabel.style.top = `calc(-110% - ${offset}px)`; // Adjust label position
+    }
+
+    // Function to extract text within quotes
+    function getTextWithinQuotes(str) {
+        var matches = str.match(/"([^"]*)"/);
+        return matches ? matches[1] : str;
+    }
+
+    // Variable to track marker visibility state
+    var markersVisible = true;
+
+    // Function to toggle markers
+    function toggleMarkers() {
+        if (markersVisible) {
+            // Hide markers
+            map.eachLayer(function(layer) {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+                if (layer instanceof L.Polyline) {
+                    map.removeLayer(layer);
+                }
+            });
+            markersVisible = false;
+        } else {
+            // Show markers
+            $.ajax({
+                url: 'markers.txt',
+                dataType: 'text',
+                success: function(data) {
+                    createMarkersAndLinesFromData(data);
+                }
+            });
+            markersVisible = true;
         }
-// Find the element with the class 'leaflet-control-attribution'
-var attributionElement = document.querySelector('.leaflet-control-attribution');
+    }
 
-// Create a new text node for the text " Chicken"
-var textNode = document.createTextNode(' | By Lucaboox on Discord');
+    // Event listener for checkbox change
+    document.getElementById('toggleMarkersCheckbox').addEventListener('change', function(event) {
+        toggleMarkers();
+    });
 
-// Append the text node to the attribution element
-attributionElement.appendChild(textNode);
+    
+
+    // Function to create markers and lines from data
+// Function to create markers and lines from data
+function createMarkersAndLinesFromData(data) {
+    var lines = data.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+        var parts = lines[i].split(',');
+        var lat = parseFloat(parts[0]);
+        var lng = parseFloat(parts[1]);
+        var iconUrl = parts[2];
+        var popupText = getTextWithinQuotes(parts[3]);
+        var labelText = getTextWithinQuotes(parts[4]);
+        var imageUrl = parts[5];
+        var destLat = parseFloat(parts[6]);
+        var destLng = parseFloat(parts[7]);
+        var labelOffsetX = parseInt(parts[8]); // Parse label offset X
+        var labelOffsetY = parseInt(parts[9]); // Parse label offset Y
+        var scale = parseFloat(parts[12]); // Parse scale
+
+        var customIconOptions = {
+            html: `<div class="custom-icon-container">
+                    <div class="marker-label-container" style="transform: translate(${labelOffsetX}px, ${labelOffsetY}px);"> <!-- Apply label offset -->
+                        <div class="marker-label">${labelText}</div>
+                    </div>
+                    <div class="marker-icon-wrapper" style="transform: scale(${scale});"> <!-- Apply scale transformation -->
+                        <img src="${iconUrl}" class="marker-icon">
+                    </div>
+                </div>`,
+            iconSize: [32, 32], // Set default icon size
+            iconAnchor: [16, 16], // Adjust icon anchor to the bottom of the icon
+            popupAnchor: [0, -32], // Adjust popup anchor as needed
+            className: '' // Remove default class to avoid default styling
+        };
+
+        var customIcon = L.divIcon(customIconOptions);
+
+        // Add image to the popup text only if iconUrl is defined and not empty
+        var popupContent = `<div>${popupText}</div>`;
+        if (imageUrl && imageUrl.trim() !== '') {
+            //popupContent += `<div><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
+            popupContent += `<div class="image-container"><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
+        }
+
+        var marker = L.marker([lat, lng], {
+            icon: customIcon
+        }).addTo(map);
+
+        var popup = L.popup({
+        maxWidth: 900 // Set the maximum width to 500 pixels
+        }).setContent(popupContent);
+
         
+    
+        marker.bindPopup(popup);
+
+
+        var hasText = parts[6].trim() !== '' && parts[7].trim() !== '';
+        if (hasText) {
+            var line = L.polyline([[lat, lng], [destLat, destLng]], { color: 'black' }).addTo(map);
+        }
+    }
+}
+
+                // Variables to store latitude and longitude
+                var cursorLat, cursorLng;
+
+// Event listener for mousemove event to update cursor latitude and longitude
+map.on('mousemove', function(event) {
+    cursorLat = event.latlng.lat.toFixed(6);
+    cursorLng = event.latlng.lng.toFixed(6);
+});
+
+// Function to show toast notification
+function showToast(message) {
+    var toast = document.getElementById('toastNotification');
+    toast.innerHTML = message;
+    toast.classList.add('show');
+    setTimeout(function() {
+        toast.classList.remove('show');
+    }, 3000); // 3000 milliseconds (3 seconds) for the notification to disappear
+}
+
+// Event listener for keydown event
+document.addEventListener('keydown', function(event) {
+    // Check if the pressed key is "Q" (key code 81)
+    if (event.keyCode === 81) {
+        // Check if cursorLat and cursorLng are defined
+        if (typeof cursorLat !== 'undefined' && typeof cursorLng !== 'undefined') {
+            // Copy latitude and longitude to clipboard
+            var coordinates = cursorLat + ', ' + cursorLng;
+            
+            // Create a temporary textarea element to copy text to clipboard
+            var textarea = document.createElement('textarea');
+            textarea.value = coordinates;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Show toast notification that coordinates are copied
+            showToast('Latitude and longitude copied to clipboard: ' + coordinates);
+        } else {
+            // Show toast notification that cursor coordinates are not available
+            showToast('Cursor coordinates are not available. Move the mouse over the map to get coordinates.');
+        }
+    }
+});
     </script>
 </body>
 </html>
+
+
+
