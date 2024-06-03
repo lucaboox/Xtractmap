@@ -46,7 +46,14 @@
             justify-content: space-between;
             cursor: pointer;
         }
-        
+
+
+        #imageTextBox button:active {
+            transform: translateY(2px);
+         }
+        #imageTextBox button:hover {
+            background-color: rgba(122, 122, 122, .5) !important;
+        }
         #imageTextBox button img {
             margin-right: 10px; /* Add some space between image and text */
         }
@@ -59,7 +66,9 @@
         .darkbackground {
         background-color: black !important; /* Dark mode background color */
         }
-        
+        .darkhover {
+            background-color: rgba(19, 19, 19, 0.8) !important;
+        }
         .dark {
         color:white !important;
         box-sizing: border-box;
@@ -91,24 +100,32 @@
         #visitor-counter-container {
             display: none;
         }
+        .leaflet-control:hover {
+            background-color: rgba(121, 121, 121) !important;
+            cursor: pointer !important;
+        }
+        .leaflet-control:active {
+            background-color: rgb(124, 124, 124) !important;
+
+        }
         .leaflet-control-mapSwitch {
             user-select: none;
             transform: scale(0.9) !important;
             padding: 6px 8px;
             background-color: white;
             border: 1px solid black;
-            border-radius: 2px;
+            border-radius: 0px;
             font-size: 14px;
             font-weight: bold;
             font-family: Oxanium, sans-serif;
-            cursor: pointer;
+            cursor: pointer !important;
             position: absolute;
             align-items: center;
             justify-content: center; /* Center the text horizontally */
             top: 1%;
             right: 1%;
             transform: translateX(-50%);
-            z-index: 1001; /* Ensure it's above the map */
+            z-index: 1000; /* Ensure it's above the map */
         }
         .leaflet-control-mapSwitch label {
             display: flex;
@@ -199,7 +216,7 @@
             padding: 6px 8px;
             background-color: white;
             border: 1px solid black;
-            border-radius: 2px;
+            border-radius: 0px;
             font-size: 14px;
             font-weight: bold;
             font-family: Oxanium, sans-serif;
@@ -226,7 +243,7 @@
             padding: 6px 8px;
             background-color: white;
             border: 1px solid black;
-            border-radius: 2px;
+            border-radius: 0px;
             font-size: 14px;
             font-weight: bold;
             font-family: Oxanium, sans-serif;
@@ -267,20 +284,21 @@
 <body>
     <div id="map"></div>
     <!-- Checkbox input for dark mode -->
-    <div class="leaflet-control-darkmode">
+    <div class="leaflet-control leaflet-control-darkmode">
         <label for="darkModeSwitch">
             <span>Dark Mode</span>
             <input type="checkbox" id="darkModeSwitch">
         </label>
     </div>
-
+    
     <!-- Checkbox input for legend toggle -->
-    <div class="leaflet-control-legend">
-    <label for="legendSwitch">
-        <span>Show Legend</span>
-        <input type="checkbox" id="legendSwitch" checked>
-    </label>
-</div>
+    <div class="leaflet-control leaflet-control-legend">
+        <label for="legendSwitch">
+            <span>Show Legend</span>
+            <input type="checkbox" id="legendSwitch" checked>
+        </label>
+    </div>
+    
 
 
 
@@ -290,7 +308,7 @@
         <a href='https://www.free-counters.org/'>Counter</a> <script type='text/javascript' src='https://whomania.com/ctr?id=a16d7270463374772100b267a326c06c3cf169fb'></script>
     </div>
 
-    <div class="leaflet-control-mapSwitch">
+    <div class="leaflet-control leaflet-control-mapSwitch">
         <label for="mapImageSwitch">
             <span>Switch Map</span>
             <input type="checkbox" id="mapImageSwitch">
@@ -456,6 +474,7 @@ function toggleAllMarkers() {
     // Add zoom control to bottom left
     var customZoomControl = L.control.zoom({ position: 'bottomleft', select: 'none' }).addTo(map);
 
+    
         
 
         // Dark and Light mode
@@ -469,6 +488,9 @@ function toggleAllMarkers() {
             document.querySelector('.leaflet-control-legend').classList.add('dark');
             document.querySelector('.leaflet-control-attribution.leaflet-control').classList.add('dark');
             document.querySelector('rect').style.fill = '#000000';
+            
+ 
+            
 
             document.getElementById('imageTextBox').classList.add('darklegendbackground');
             document.querySelectorAll("#imageTextBox button").forEach(function(button) {
@@ -493,7 +515,8 @@ function toggleAllMarkers() {
             document.querySelector('.leaflet-control-mapSwitch').classList.remove('dark');
             document.querySelector('.leaflet-control-darkmode').classList.remove('dark');
             document.querySelector('.leaflet-control-legend').classList.remove('dark');
-            document.querySelector('rect').style.fill = '#111111';
+            document.querySelector('.leaflet-control-attribution.leaflet-control').classList.remove('dark');
+            document.querySelector('rect').style.fill = '#ffffff';
 
             document.getElementById('imageTextBox').classList.remove('darklegendbackground');
             document.querySelectorAll("#imageTextBox button").forEach(function(button) {
