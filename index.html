@@ -11,15 +11,75 @@
     <title>Xtract Map Reforger</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+        
+
+        #imageTextBox {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-weight: bold;
+            background-color: rgba(190, 189, 189, 0.5);
+            border: 1px solid black;
+            padding: 10px;
+            z-index: 1001;
+            font-family: Oxanium, sans-serif;
+        }
+
+        #imageTextBox img {
+            vertical-align: middle;
+            margin-right: 10px;
+            height: 32px;
+
+        }
+
+        #imageTextBox button {
+            width: 200px; 
+            height: 37px !important;
+            font-weight: bold;
+            display: flex;
+                flex-direction: row;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: none!important;
+            padding: 5px;
+            font-family: Oxanium, sans-serif;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+        
+        #imageTextBox button img {
+            margin-right: 10px; /* Add some space between image and text */
+        }
+
+        #imageTextBox button span {
+            text-align: center;
+            flex-grow: 1; /* Allow the text to take up remaining space */
+        }
+
         .darkbackground {
         background-color: black !important; /* Dark mode background color */
         }
+        
         .dark {
         color:white !important;
         box-sizing: border-box;
         border: 1px solid white !important;
         background-color: black !important; /* Dark mode background color */
         }
+        .darklegendbackground {
+        color:white !important;
+        box-sizing: border-box;
+        border: 1px solid rgb(255, 255, 255) !important;
+        background-color: rgba(130, 130, 130, 0.4) !important;
+        }
+
+        .darklegend {
+        color:white !important;
+        box-sizing: border-box;
+        border: 1px solid white !important;
+        background-color: rgba(0, 0, 0, 0.4) !important;
+        }
+
         .leaflet-popup-content-wrapper {
             padding: 1px;
             text-align: center;
@@ -104,11 +164,12 @@
             font-family: Oxanium, sans-serif;
             left: 50%;
             transform: translateX(-50%);
+            border: 1px solid #000000;
             background-color: #ffffff;
             color: #000000;
             text-align: center;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 0px;
             z-index: 10000;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
@@ -130,25 +191,6 @@
         }
         .dark-mode #map {
             background-color: black !important;
-        }
-        .leaflet-control-toggleMarkers {
-            user-select: none;
-            transform: scale(0.9) !important;
-            padding: 6px 8px;
-            background-color: white;
-            border: 1px solid black;
-            border-radius: 2px;
-            font-size: 14px;
-            font-weight: bold;
-            font-family: Oxanium, sans-serif;
-            cursor: pointer;
-            position: absolute;
-            align-items: center;
-            justify-content: center; /* Center the text horizontally */
-            bottom: 159.5px;
-            left: 14px;
-            transform: translateX(-50%);
-            z-index: 1001; /* Ensure it's above the map */
         }
         .leaflet-control-darkmode {
             justify-content: center !important;
@@ -204,14 +246,7 @@
         .leaflet-control-legend.dark-mode span {
             margin-right: 6px;
         }
-        .legend-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: none;
-            z-index: 1000;
-            
-        }
+
         .leaflet-control-darkmode label, .leaflet-control-legend label {
             display: flex;
             align-items: center;
@@ -231,10 +266,6 @@
 </head>
 <body>
     <div id="map"></div>
-    <div class="legend-container" id="legendContainer">
-        <img src="images/Legend-Transparent.png" alt="Legend">
-    </div>
-
     <!-- Checkbox input for dark mode -->
     <div class="leaflet-control-darkmode">
         <label for="darkModeSwitch">
@@ -251,13 +282,7 @@
     </label>
 </div>
 
-<!-- Checkbox input to toggle markers -->
-<div class="leaflet-control-toggleMarkers">
-    <label for="toggleMarkersCheckbox">
-        <span>Toggle Markers</span>
-        <input type="checkbox" id="toggleMarkersCheckbox">
-    </label>
-</div>
+
 
     <!-- Visitor counter container with box-like appearance -->
     <div id="visitor-counter-container">
@@ -275,8 +300,119 @@
     <!-- Toast Notification -->
     <div class="toast" id="toastNotification"></div>
 
+
+    <!-- <div id="imageTextBox">
+        <div>
+            <img src="images/Extract.png" alt="Icon 1" style="width: 32px; height: 32px;">
+            <label class="checkbox-label">
+                Marker 1
+                <input type="checkbox" id="checkboxIcon1" onchange="toggleMarkersByImage('images/Extract.png')" checked>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div>
+            <img src="images/PExtract.png" alt="Icon 2">
+            <label class="checkbox-label">
+                Marker 2
+                <input type="checkbox" id="checkboxIcon2" onchange="toggleMarkersByImage('images/PExtract.png')" checked>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <div>
+            <img src="images/helicrash.png" alt="Icon 3">
+            <label class="checkbox-label">
+                Marker 3
+                <input type="checkbox" id="checkboxIcon3" onchange="toggleMarkersByImage('images/helicrash.png')" checked>
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <button onclick="toggleAllMarkers()">Toggle All</button>
+    </div> -->
+
+    <div id="imageTextBox">
+        <button onclick="toggleMarkersByImage('images/Extract.png')" data-image-url="images/Extract.png" data-checkbox-id="checkbox1">
+            <img src="images/Extract.png" alt="Icon 1">
+            <span>Extract</span>
+            <input type="checkbox" id="checkbox1" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/PExtract.png')" data-image-url="images/PExtract.png" data-checkbox-id="checkbox2">
+            <img src="images/PExtract.png" alt="Icon 2">
+            <span>Paid Extract</span>
+            <input type="checkbox" id="checkbox2" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/helicrash.png')" data-image-url="images/helicrash.png" data-checkbox-id="checkbox3">
+            <img src="images/helicrash.png" alt="Icon 3">
+            <span>Helicrash</span>
+            <input type="checkbox" id="checkbox3" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/atc.png')" data-image-url="images/atc.png" data-checkbox-id="checkbox4">
+            <img src="images/atc.png" alt="Icon 4">
+            <span>ATC Tower</span>
+            <input type="checkbox" id="checkbox4" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/factory.png')" data-image-url="images/factory.png" data-checkbox-id="checkbox5">
+            <img src="images/factory.png" alt="Icon 5">
+            <span>Factory</span>
+            <input type="checkbox" id="checkbox5" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/tent.png')" data-image-url="images/tent.png" data-checkbox-id="checkbox6">
+            <img src="images/tent.png" alt="Icon 6">
+            <span>Military Tent</span>
+            <input type="checkbox" id="checkbox6" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/tier1.png')" data-image-url="images/tier1.png" data-checkbox-id="checkbox7">
+            <img src="images/tier1.png" alt="Icon 7">
+            <span>Tier 1 Boss</span>
+            <input type="checkbox" id="checkbox7" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/2.png')" data-image-url="images/tier2.png" data-checkbox-id="checkbox8">
+            <img src="images/tier2.png" alt="Icon 8">
+            <span>Tier 2 Boss</span>
+            <input type="checkbox" id="checkbox8" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/tier3.png')" data-image-url="images/tier3.png" data-checkbox-id="checkbox9">
+            <img src="images/tier3.png" alt="Icon 9">
+            <span>Tier 3 Boss</span>
+            <input type="checkbox" id="checkbox9" checked>
+        </button>
+        <button onclick="toggleMarkersByImage('images/military.png')" data-image-url="images/military.png" data-checkbox-id="checkbox10">
+            <img src="images/military.png" alt="Icon 10">
+            <span>Military Loot</span>
+            <input type="checkbox" id="checkbox10" checked>
+        </button>
+        <button onclick="toggleAllMarkers()" style="margin-top: 10px; text-align: center; display: block; width: 100%;">Toggle All</button>
+    </div>
+    
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
+
+// Add event listeners to checkboxes to toggle marker visibility
+document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+        var imageUrl = this.parentNode.getAttribute('data-image-url');
+        toggleMarkersByImage(imageUrl, this.checked);
+    });
+});
+
+// Function to toggle all markers
+function toggleAllMarkers() {
+    var buttons = document.querySelectorAll("#imageTextBox button");
+    buttons.forEach(function(button) {
+        var checkboxId = button.getAttribute("data-checkbox-id");
+        var checkbox = document.getElementById(checkboxId);
+        var imageUrl = button.getAttribute("data-image-url");
+
+        // Hide or show the marker based on the checkbox state
+        toggleMarkersByImage(imageUrl, !checkbox.checked);
+
+        // Update the checkbox state
+        checkbox.checked = !checkbox.checked;
+    });
+}
+
+
+    
     //var imageUrl = 'Arland-map-HQ.png';
     var imageUrl1 = 'images/Arland-map-HQ Test.png';
     var imageUrl2 = 'images/Arland-map-HQ.png';
@@ -325,14 +461,21 @@
         // Dark and Light mode
         function Darkmode () {
             document.getElementById('map').classList.add('darkbackground');
+            document.querySelector('div#toastNotification').classList.add('dark');
             document.querySelector('.leaflet-control-zoom-in').classList.add('dark');
             document.querySelector('.leaflet-control-zoom-out').classList.add('dark');
             document.querySelector('.leaflet-control-mapSwitch').classList.add('dark');
             document.querySelector('.leaflet-control-darkmode').classList.add('dark');
-            document.querySelector('.leaflet-control-toggleMarkers').classList.add('dark');
             document.querySelector('.leaflet-control-legend').classList.add('dark');
             document.querySelector('.leaflet-control-attribution.leaflet-control').classList.add('dark');
             document.querySelector('rect').style.fill = '#000000';
+
+            document.getElementById('imageTextBox').classList.add('darklegendbackground');
+            document.querySelectorAll("#imageTextBox button").forEach(function(button) {
+            button.classList.add('darklegend');
+        });
+
+
 
             map.on('popupopen', function (e) {
                 var elements = e.popup._container.querySelectorAll('.leaflet-popup-content-wrapper, .leaflet-popup-tip');
@@ -344,14 +487,18 @@
         }
         function Lightmode () {
             document.getElementById('map').classList.remove('darkbackground');
+            document.querySelector('div#toastNotification').classList.remove('dark');
             document.querySelector('.leaflet-control-zoom-in').classList.remove('dark');
             document.querySelector('.leaflet-control-zoom-out').classList.remove('dark');
             document.querySelector('.leaflet-control-mapSwitch').classList.remove('dark');
             document.querySelector('.leaflet-control-darkmode').classList.remove('dark');
-            document.querySelector('.leaflet-control-toggleMarkers').classList.remove('dark');
             document.querySelector('.leaflet-control-legend').classList.remove('dark');
             document.querySelector('rect').style.fill = '#111111';
 
+            document.getElementById('imageTextBox').classList.remove('darklegendbackground');
+            document.querySelectorAll("#imageTextBox button").forEach(function(button) {
+            button.classList.remove('darklegend');
+        });
 
 
             map.on('popupopen', function (e) {
@@ -387,12 +534,12 @@
 
     // Event listener for legend toggle switch
     document.getElementById('legendSwitch').addEventListener('change', function (event) {
-        var legendContainer = document.getElementById('legendContainer');
+        var imageTextBox = document.getElementById('imageTextBox');
         if (event.target.checked) {
-            legendContainer.style.display = 'block';
+            imageTextBox.style.display = 'block';
             localStorage.setItem('legendEnabled', 'true');
         } else {
-            legendContainer.style.display = 'none';
+            imageTextBox.style.display = 'none';
             localStorage.setItem('legendEnabled', 'false');
         }
     });
@@ -400,7 +547,7 @@
     // Retrieve legend visibility setting from local storage
     var legendEnabled = localStorage.getItem('legendEnabled');
     if (legendEnabled === 'false') {
-        document.getElementById('legendContainer').style.display = 'none';
+        document.getElementById('imageTextBox').style.display = 'none';
         document.getElementById('legendSwitch').checked = false;
     }
 
@@ -488,40 +635,40 @@
     // Variable to track marker visibility state
     var markersVisible = true;
 
-    // Function to toggle markers
-    function toggleMarkers() {
-        if (markersVisible) {
-            // Hide markers
-            map.eachLayer(function(layer) {
-                if (layer instanceof L.Marker) {
-                    map.removeLayer(layer);
-                }
-                if (layer instanceof L.Polyline) {
-                    map.removeLayer(layer);
-                }
-            });
-            markersVisible = false;
-        } else {
-            // Show markers
-            $.ajax({
-                url: 'markers.txt',
-                dataType: 'text',
-                success: function(data) {
-                    createMarkersAndLinesFromData(data);
-                }
-            });
-            markersVisible = true;
+
+
+        // Add event listeners to the buttons
+document.querySelectorAll("#imageTextBox button").forEach(button => {
+    button.addEventListener("click", function() {
+        const checkboxId = this.getAttribute("data-checkbox-id");
+        const checkbox = document.getElementById(checkboxId);
+        if (checkbox) {
+            checkbox.checked = !checkbox.checked;
         }
-    }
-
-    // Event listener for checkbox change
-    document.getElementById('toggleMarkersCheckbox').addEventListener('change', function(event) {
-        toggleMarkers();
     });
+});
 
-    
+    var markersByImage = {};
 
-    // Function to create markers and lines from data
+    // Function to toggle markers by image URL
+function toggleMarkersByImage(imageUrl) {
+    console.log('Toggling markers for image URL:', imageUrl);
+    console.log('Available keys in markersByImage:', Object.keys(markersByImage));
+
+    var layerGroup = markersByImage[imageUrl];
+
+    if (layerGroup) {
+        if (map.hasLayer(layerGroup)) {
+            map.removeLayer(layerGroup);
+        } else {
+            map.addLayer(layerGroup);
+        }
+    } else {
+        console.log('No layer group found for image URL:', imageUrl);
+    }
+}
+
+
 // Function to create markers and lines from data
 function createMarkersAndLinesFromData(data) {
     var lines = data.split('\n');
@@ -576,10 +723,23 @@ function createMarkersAndLinesFromData(data) {
         marker.bindPopup(popup);
 
 
-        var hasText = parts[6].trim() !== '' && parts[7].trim() !== '';
-        if (hasText) {
-            var line = L.polyline([[lat, lng], [destLat, destLng]], { color: 'black' }).addTo(map);
+           // Initialize layer group if not already done
+if (!markersByImage[iconUrl]) {
+    markersByImage[iconUrl] = L.layerGroup(); // Naming the layer group after the icon URL
+    markersByImage[iconUrl].addTo(map); // Add the layer group to the map
+}
+
+markersByImage[iconUrl].addLayer(marker);
+
+        if (!isNaN(destLat) && !isNaN(destLng)) {
+            var line = L.polyline([[lat, lng], [destLat, destLng]], { color: 'black' });
+            markersByImage[iconUrl].addLayer(line);
         }
+    }
+
+    // Add all layer groups to the map initially
+    for (var key in markersByImage) {
+        markersByImage[key].addTo(map);
     }
 }
 
