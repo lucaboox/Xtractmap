@@ -11,8 +11,35 @@
     <title>Xtract Map Reforger</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        
+        .popup-image-container {
+            position: relative;
+            z-index: 99999 !important;
+            cursor: pointer;
+            
+        }
 
+        .popup-image-container img {
+            transition: transform 0.3s ease-in-out;
+            z-index: 99999 !important;
+        }
+
+        .popup {
+
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 99999 !important;
+        }
+
+        .popup img {
+            z-index: 99999 !important;
+            max-width: 100%;
+            max-height: 100%;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+            border-radius: 5px;
+        }
         #imageTextBox {
             position: absolute;
             top: 10px;
@@ -128,6 +155,7 @@
             z-index: 1000; /* Ensure it's above the map */
         }
         .leaflet-control-mapSwitch label {
+            cursor: pointer !important;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -270,6 +298,7 @@
             gap: 6px;
             width: 100%;
             justify-content: center;
+            cursor: pointer !important;
         }
         .legend-container img {
             max-height: 260px !important; /* Adjust as needed */
@@ -283,6 +312,8 @@
 </head>
 <body>
     <div id="map"></div>
+
+    <div class="popup" id="imagePopup"></div>
     <!-- Checkbox input for dark mode -->
     <div class="leaflet-control leaflet-control-darkmode">
         <label for="darkModeSwitch">
@@ -429,47 +460,52 @@ function toggleAllMarkers() {
     });
 }
 
-
     
-    //var imageUrl = 'Arland-map-HQ.png';
-    var imageUrl1 = 'images/Arland-map-HQ Test.png';
-    var imageUrl2 = 'images/Arland-map-HQ.png';
-    var imageBounds = [[0, 0], [6456, 7272]]; // Image size: height x width 6456, 7272
-    var imageLimit = [[0, 0], [6456, 7272]];
+   // Define the URLs for the map images
+var imageUrl1 = 'images/Arland-map-HQ Light.png';
+var imageUrl2 = 'images/Arland-map-HQ Dark.png';
 
-    // Calculate the aspect ratio of the image
-    var aspectRatio = 7272 / 6456;
+// Define the image bounds (original and extended)
+var imageBounds = [[0, 0], [6456, 7272]]; // Original image size: height x width
+var imageLimit = [[-1000, -1000], [7456, 8272]]; // Extended bounds for the map
 
-    // Calculate the maximum width and height of the map to maintain the aspect ratio
-    var maxWidth = window.innerWidth;
-    var maxHeight = window.innerHeight;
+// Calculate the aspect ratio of the image
+var aspectRatio = 7272 / 6456;
 
-    if (maxWidth / maxHeight > aspectRatio) {
-        maxWidth = maxHeight * aspectRatio;
-    } else {
-        maxHeight = maxWidth / aspectRatio;
-    }
+// Calculate the maximum width and height of the map to maintain the aspect ratio
+var maxWidth = window.innerWidth;
+var maxHeight = window.innerHeight;
 
-    var map = L.map('map', {
-        maxZoom: 4,
-        minZoom: -2.8,
-        setZoom: 20,
-        zoomSnap: 0,
-        wheelPxPerZoomLevel: 70,
-        maxBoundsViscosity: 1.0,
-        maxBounds: imageBounds,
-        crs: L.CRS.Simple,
-        zoomControl: false
-    }).setView([0, 0], -5);
+if (maxWidth / maxHeight > aspectRatio) {
+    maxWidth = maxHeight * aspectRatio;
+} else {
+    maxHeight = maxWidth / aspectRatio;
+}
 
-    map.attributionControl.addAttribution('Site By Lucaboox <a href="https://ko-fi.com/lucaboox" target="_blank">Donate</a>');
+// Initialize the map with the given settings
+var map = L.map('map', {
+    maxZoom: 4,
+    minZoom: -2.8,
+    zoomSnap: 0,
+    wheelPxPerZoomLevel: 70,
+    maxBoundsViscosity: 1.0,
+    maxBounds: imageLimit,
+    crs: L.CRS.Simple,
+    zoomControl: false
+}).setView([3228, 4636], -2.8); // Setting view to the center of the image bounds
 
-    var currentImage = imageUrl1;
-        var imageOverlay = L.imageOverlay(currentImage, imageBounds).addTo(map);
-        map.setMaxBounds(imageLimit); // Restrict the map to the size of the image
-        map.on('drag', function () {
-            map.panInsideBounds(imageLimit, { animate: false });
-        });
+// Add attribution to the map
+map.attributionControl.addAttribution('Site By Lucaboox <a href="https://ko-fi.com/lucaboox" target="_blank">Donate</a>');
+
+// Add the image overlay to the map
+var currentImage = imageUrl1;
+var imageOverlay = L.imageOverlay(currentImage, imageBounds).addTo(map);
+
+// Set the maximum bounds for the map and restrict dragging outside these bounds
+map.setMaxBounds(imageLimit);
+map.on('drag', function () {
+    map.panInsideBounds(imageLimit, { animate: false });
+});
 
     // Add zoom control to bottom left
     var customZoomControl = L.control.zoom({ position: 'bottomleft', select: 'none' }).addTo(map);
@@ -541,6 +577,23 @@ function toggleAllMarkers() {
         Darkmode();
         document.getElementById('darkModeSwitch').checked = true;
     }
+
+
+    function handleControlClick(control) {
+            $(document).on('click', control, function(e){
+                // Check if the click was on the background
+                if(e.target.classList.contains(control.replace('.', ''))){
+                    // Simulate click on the input element
+                    $(this).find('input').click();
+                }
+            });
+        }
+
+        // Call function for each control
+        handleControlClick('.leaflet-control-mapSwitch');
+        handleControlClick('.leaflet-control-legend');
+        handleControlClick('.leaflet-control-darkmode');
+
 
     // Event listener for dark mode switch
     document.getElementById('darkModeSwitch').addEventListener('change', function (event) {
@@ -692,6 +745,7 @@ function toggleMarkersByImage(imageUrl) {
 }
 
 
+
 // Function to create markers and lines from data
 function createMarkersAndLinesFromData(data) {
     var lines = data.split('\n');
@@ -729,10 +783,8 @@ function createMarkersAndLinesFromData(data) {
         // Add image to the popup text only if iconUrl is defined and not empty
         var popupContent = `<div>${popupText}</div>`;
         if (imageUrl && imageUrl.trim() !== '') {
-            //popupContent += `<div><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
-            popupContent += `<div class="image-container"><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
-        }
-
+    popupContent += `<div class="popup-image-container"><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
+}
         var marker = L.marker([lat, lng], {
             icon: customIcon
         }).addTo(map);
@@ -808,6 +860,23 @@ document.addEventListener('keydown', function(event) {
             // Show toast notification that cursor coordinates are not available
             showToast('Cursor coordinates are not available. Move the mouse over the map to get coordinates.');
         }
+    }
+});
+
+// if (imageUrl && imageUrl.trim() !== '') {
+//     popupContent += `<div class="popup-image-container"><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
+// }
+
+$(document).on("click", ".popup-image-container img", function() {
+    var imageUrl = $(this).attr("src");
+    var popupHtml = '<img src="' + imageUrl + '" alt="Popup Image">';
+    $("#imagePopup").html(popupHtml).fadeIn();
+});
+
+// Add event listener to hide popup when clicking outside the image
+$(document).on("click", function(event) {
+    if (!$(event.target).closest(".popup-image-container").length) {
+        $("#imagePopup").fadeOut().html("");
     }
 });
     </script>
