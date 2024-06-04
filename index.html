@@ -11,6 +11,76 @@
     <title>Xtract Map Reforger</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+        #togglemarkers{
+            border: 1px solid rgb(0, 0, 0);
+        }
+        .lightlegendtoggle
+        {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: rgb(0, 0, 0) !important;
+            border: 1px solid rgb(0, 0, 0) !important;
+        }
+
+        .darklegendtoggle
+        {
+            background-color: rgba(0, 0, 0, 0.4) !important;
+            color: white !important;
+            border: 1px solid white !important;
+        }
+        .darklegendbuttons
+        {
+            background-color: black !important;
+            border: 1px solid white !important;
+        }
+        /* Create a custom checkbox */
+        .custom-checkbox {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+                text-align: start;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .custom-checkbox .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            border: 1px solid rgb(0, 0, 0);
+            background-color: #e6e6e6;
+            transition: background-color 0.3s;
+        }
+
+        /* When the checkbox is checked, show the checkmark */
+        .custom-checkbox input:checked + .checkmark {
+            background-color: #ffffff;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+        .custom-checkbox .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+        .custom-checkbox input:checked + .checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            bottom: 5px;
+            width: 6px;
+            height: 12px;
+            border: solid rgb(53, 181, 2);
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+            
+        }
         .popup-image-container {
             position: relative;
             z-index: 99999 !important;
@@ -67,7 +137,7 @@
                 flex-direction: row;
             align-items: center;
             background-color: rgba(255, 255, 255, 0.5);
-            border: none!important;
+            border: none;
             padding: 5px;
             font-family: Oxanium, sans-serif;
             justify-content: space-between;
@@ -106,13 +176,13 @@
         color:white !important;
         box-sizing: border-box;
         border: 1px solid rgb(255, 255, 255) !important;
-        background-color: rgba(130, 130, 130, 0.4) !important;
+        background-color: rgba(35, 35, 35, 0.4) !important;
         }
 
         .darklegend {
         color:white !important;
         box-sizing: border-box;
-        border: 1px solid white !important;
+        border: none !important;
         background-color: rgba(0, 0, 0, 0.4) !important;
         }
 
@@ -378,71 +448,94 @@
         <button onclick="toggleAllMarkers()">Toggle All</button>
     </div> -->
 
-    <div id="imageTextBox">
-        <button onclick="toggleMarkersByImage('images/Extract.png')" data-image-url="images/Extract.png" data-checkbox-id="checkbox1">
-            <img src="images/Extract.png" alt="Icon 1">
-            <span>Extract</span>
+<div id="imageTextBox">
+    <button onclick="toggleMarkersByImage('images/Extract.png')" data-image-url="images/Extract.png" data-checkbox-id="checkbox1">
+        <img src="images/Extract.png" alt="Icon 1">
+        <span>Extract</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox1" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/PExtract.png')" data-image-url="images/PExtract.png" data-checkbox-id="checkbox2">
-            <img src="images/PExtract.png" alt="Icon 2">
-            <span>Paid Extract</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/PExtract.png')" data-image-url="images/PExtract.png" data-checkbox-id="checkbox2">
+        <img src="images/PExtract.png" alt="Icon 2">
+        <span>Paid Extract</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox2" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/helicrash.png')" data-image-url="images/helicrash.png" data-checkbox-id="checkbox3">
-            <img src="images/helicrash.png" alt="Icon 3">
-            <span>Helicrash</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/helicrash.png')" data-image-url="images/helicrash.png" data-checkbox-id="checkbox3">
+        <img src="images/helicrash.png" alt="Icon 3">
+        <span>Helicrash</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox3" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/atc.png')" data-image-url="images/atc.png" data-checkbox-id="checkbox4">
-            <img src="images/atc.png" alt="Icon 4">
-            <span>ATC Tower</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/atc.png')" data-image-url="images/atc.png" data-checkbox-id="checkbox4">
+        <img src="images/atc.png" alt="Icon 4">
+        <span>ATC Tower</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox4" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/factory.png')" data-image-url="images/factory.png" data-checkbox-id="checkbox5">
-            <img src="images/factory.png" alt="Icon 5">
-            <span>Factory</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/factory.png')" data-image-url="images/factory.png" data-checkbox-id="checkbox5">
+        <img src="images/factory.png" alt="Icon 5">
+        <span>Factory</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox5" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/tent.png')" data-image-url="images/tent.png" data-checkbox-id="checkbox6">
-            <img src="images/tent.png" alt="Icon 6">
-            <span>Military Tent</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/tent.png')" data-image-url="images/tent.png" data-checkbox-id="checkbox6">
+        <img src="images/tent.png" alt="Icon 6">
+        <span>Military Tent</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox6" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/tier1.png')" data-image-url="images/tier1.png" data-checkbox-id="checkbox7">
-            <img src="images/tier1.png" alt="Icon 7">
-            <span>Tier 1 Boss</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/tier1.png')" data-image-url="images/tier1.png" data-checkbox-id="checkbox7">
+        <img src="images/tier1.png" alt="Icon 7">
+        <span>Tier 1 Boss</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox7" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/tier2.png')" data-image-url="images/tier2.png" data-checkbox-id="checkbox8">
-            <img src="images/tier2.png" alt="Icon 8">
-            <span>Tier 2 Boss</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/tier2.png')" data-image-url="images/tier2.png" data-checkbox-id="checkbox8">
+        <img src="images/tier2.png" alt="Icon 8">
+        <span>Tier 2 Boss</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox8" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/tier3.png')" data-image-url="images/tier3.png" data-checkbox-id="checkbox9">
-            <img src="images/tier3.png" alt="Icon 9">
-            <span>Tier 3 Boss</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/tier3.png')" data-image-url="images/tier3.png" data-checkbox-id="checkbox9">
+        <img src="images/tier3.png" alt="Icon 9">
+        <span>Tier 3 Boss</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox9" checked>
-        </button>
-        <button onclick="toggleMarkersByImage('images/military.png')" data-image-url="images/military.png" data-checkbox-id="checkbox10">
-            <img src="images/military.png" alt="Icon 10">
-            <span>Military Loot</span>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleMarkersByImage('images/military.png')" data-image-url="images/military.png" data-checkbox-id="checkbox10">
+        <img src="images/military.png" alt="Icon 10">
+        <span>Military Loot</span>
+        <label class="custom-checkbox">
             <input type="checkbox" id="checkbox10" checked>
-        </button>
-        <button onclick="toggleAllMarkers()" style="margin-top: 10px; text-align: center; display: block; width: 100%;">Toggle All</button>
-    </div>
+            <span class="checkmark"></span>
+        </label>
+    </button>
+    <button onclick="toggleAllMarkers()" id="togglemarkers" style="text-align: center; display: block; width: 100%;">Toggle All</button>
+</div>
     
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 
-// Add event listeners to checkboxes to toggle marker visibility
-document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
-    checkbox.addEventListener('change', function() {
-        var imageUrl = this.parentNode.getAttribute('data-image-url');
-        toggleMarkersByImage(imageUrl, this.checked);
-    });
-});
 
 // Function to toggle all markers
 function toggleAllMarkers() {
@@ -510,7 +603,7 @@ map.on('drag', function () {
     // Add zoom control to bottom left
     var customZoomControl = L.control.zoom({ position: 'bottomleft', select: 'none' }).addTo(map);
 
-    
+    document.getElementById('togglemarkers').classList.add('lightlegendtoggle'); 
         
 
         // Dark and Light mode
@@ -523,17 +616,21 @@ map.on('drag', function () {
             document.querySelector('.leaflet-control-darkmode').classList.add('dark');
             document.querySelector('.leaflet-control-legend').classList.add('dark');
             document.querySelector('.leaflet-control-attribution.leaflet-control').classList.add('dark');
+
             document.querySelector('rect').style.fill = '#000000';
             
- 
+
             
 
             document.getElementById('imageTextBox').classList.add('darklegendbackground');
             document.querySelectorAll("#imageTextBox button").forEach(function(button) {
             button.classList.add('darklegend');
         });
-
-
+        document.querySelectorAll(".custom-checkbox .checkmark").forEach(function(button) {
+            button.classList.add('darklegendbuttons');
+        });
+        document.getElementById('togglemarkers').classList.remove('darklegend');
+        document.getElementById('togglemarkers').classList.add('darklegendtoggle');
 
             map.on('popupopen', function (e) {
                 var elements = e.popup._container.querySelectorAll('.leaflet-popup-content-wrapper, .leaflet-popup-tip');
@@ -552,12 +649,19 @@ map.on('drag', function () {
             document.querySelector('.leaflet-control-darkmode').classList.remove('dark');
             document.querySelector('.leaflet-control-legend').classList.remove('dark');
             document.querySelector('.leaflet-control-attribution.leaflet-control').classList.remove('dark');
+
             document.querySelector('rect').style.fill = '#ffffff';
 
             document.getElementById('imageTextBox').classList.remove('darklegendbackground');
             document.querySelectorAll("#imageTextBox button").forEach(function(button) {
             button.classList.remove('darklegend');
         });
+        document.querySelectorAll(".custom-checkbox .checkmark").forEach(function(button) {
+            button.classList.remove('darklegendbuttons');
+        });
+        document.getElementById('togglemarkers').classList.remove('darklegend');
+        document.getElementById('togglemarkers').classList.remove('darklegendtoggle');
+        document.getElementById('togglemarkers').classList.add('lightlegendtoggle');
 
 
             map.on('popupopen', function (e) {
@@ -713,16 +817,35 @@ map.on('drag', function () {
 
 
 
-        // Add event listeners to the buttons
+// Add event listeners to the buttons
 document.querySelectorAll("#imageTextBox button").forEach(button => {
-    button.addEventListener("click", function() {
+    
+    button.addEventListener("click", function(event) {
+        // Check if the click event was triggered by the checkbox
+        const imageUrl = this.getAttribute('data-image-url'); // Define imageUrl here
         const checkboxId = this.getAttribute("data-checkbox-id");
         const checkbox = document.getElementById(checkboxId);
-        if (checkbox) {
+        if (event.target.type === 'checkbox') {
+            console.log("test")
             checkbox.checked = !checkbox.checked;
+            toggleMarkersByImage(imageUrl);
+            // Do nothing if the checkbox itself was clicked
+            return;
+        }
+
+
+        if (checkbox) {
+            // Toggle the checkbox state
+            checkbox.checked = !checkbox.checked;
+            toggleMarkersByImage(imageUrl);
+            // Toggle markers by image
+            const imageUrl = this.getAttribute('data-image-url');
+            toggleMarkersByImage(imageUrl);
+
         }
     });
 });
+
 
     var markersByImage = {};
 
@@ -862,10 +985,6 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
-
-// if (imageUrl && imageUrl.trim() !== '') {
-//     popupContent += `<div class="popup-image-container"><img src="${imageUrl}" alt="Image" style="width:380px;height:auto;"></div>`;
-// }
 
 $(document).on("click", ".popup-image-container img", function() {
     var imageUrl = $(this).attr("src");
