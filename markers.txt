@@ -1,21 +1,21 @@
-5102.319786, 2874.862769,images/Extract.png,Harbor Bunker Extract,HARBOR<br>BUNKER,images/locations/harborbunker.jpg,,,,,,,
-4549.782871, 4272.909498,images/Extract.png,Under Bridge Extract,UNDER<br>BRIDGE,images/locations/underbridge.jpg,
+5102.319786, 2874.862769,images/Extract.png,Harbor Bunker Extract,HARBOR<br>BUNKER,images/Locations/harborbunker.jpg,,,,,,,
+4549.782871, 4272.909498,images/Extract.png,Under Bridge Extract,UNDER<br>BRIDGE,images/Locations/underbridge.jpg,
 1694.049582, 4211.538852,images/Extract.png,Forest Ruin Extract,FOREST<br>RUIN,,
-1943.649603, 5225.684690,images/Extract.png,Smuggler Boat Extract,SMUGLER<br>BOAT,images/locations/smugglerboat.jpg,
-2764.660705, 3393.892623,images/PExtract.png,Uboat Extract<br>Cost $2000,UBOAT,images/locations/uboat.jpg,,,-105,65 
-4582.828416, 5375.853440,images/PExtract.png,Carrier Extract<br>Cost $2500,CARRIER,images/locations/carrier.jpg,,,20,65
-2550.100041, 5105.945707,images/tier1.png,Tier 1 Boss Church Boss<br>Has Lots of crates in the church,,images/locations/tier1photo.jpg,2602.646135,5002.871835,
-3887.157569, 5561.834910,images/tier2.png,Tier 2 Boss Sniper Boss<br>Has Lots of crates in the church,,images/locations/tier2photo.jpg,3994.502993,5640.087698,
-4395.561855, 5342.389638,images/tier3.png,Tier 3 Boss Harbor Boss<br>Has Lots of crates in the church,,images/locations/tier3photo.jpg,4346.074724,5209.406861,
-4214.239803, 2963.823904,images/helicrash.png,Helicrash at airfield has multiple weapon crates,,images/locations/helicrash1.jpg,,,,,,,1.3
-4186.853097, 4421.211764,images/helicrash.png,Helicrash has a few crates lots of AI,,images/locations/helicrash2.jpg,4027.967124,4419.487658,,,,,1.3
-2357.636769, 4176.064176,images/factory.png,Factory building has a few crates,,images/locations/factory.jpg,,,,
-3031.510045, 4952.410803,images/tent.png,Military tents has a few crates and some AI,,images/locations/militarytents.jpg,,,
-4429.669183, 2749.180698,images/atc.png,ATC tower has a few crates and some AI,,images/locations/atctower.jpg,,,,
-3663.970209, 2773.259412,images/military.png,Military base has barracks with crates and AI,,images/locations/militarybase.jpg,,,,,,,.5
-3816.001994, 4382.577254,images/military.png,Military building has a few crates,,images/locations/military1.jpg,,,,,,,.5
-4900.563085, 2473.480084,images/military.png,Military building has a few crates,,images/locations/coastmilitary.jpg,,,,,,,.5
-3100.362457, 3398.569994,images/military.png,Military buildings has a few crates,,images/locations/militaryuboat.jpg,,,,,,,.5
+1943.649603, 5225.684690,images/Extract.png,Smuggler Boat Extract,SMUGLER<br>BOAT,images/Locations/smugglerboat.jpg,
+2764.660705, 3393.892623,images/PExtract.png,Uboat Extract<br>Cost $2000,UBOAT,images/Locations/uboat.jpg,,,-105,65 
+4582.828416, 5375.853440,images/PExtract.png,Carrier Extract<br>Cost $2500,CARRIER,images/Locations/carrier.jpg,,,20,65
+2550.100041, 5105.945707,images/tier1.png,Tier 1 Boss Church Boss<br>Has Lots of crates in the church,,images/Locations/tier1photo.jpg,2602.646135,5002.871835,
+3887.157569, 5561.834910,images/tier2.png,Tier 2 Boss Sniper Boss<br>Has Lots of crates in the church,,images/Locations/tier2photo.jpg,3994.502993,5640.087698,
+4395.561855, 5342.389638,images/tier3.png,Tier 3 Boss Harbor Boss<br>Has Lots of crates in the church,,images/Locations/tier3photo.jpg,4346.074724,5209.406861,
+4214.239803, 2963.823904,images/helicrash.png,Helicrash at airfield has multiple weapon crates,,images/Locations/helicrash1.jpg,,,,,,,1.3
+4186.853097, 4421.211764,images/helicrash.png,Helicrash has a few crates lots of AI,,images/Locations/helicrash2.jpg,4027.967124,4419.487658,,,,,1.3
+2357.636769, 4176.064176,images/factory.png,Factory building has a few crates,,images/Locations/factory.jpg,,,,
+3031.510045, 4952.410803,images/tent.png,Military tents has a few crates and some AI,,images/Locations/militarytents.jpg,,,
+4429.669183, 2749.180698,images/atc.png,ATC tower has a few crates and some AI,,images/Locations/atctower.jpg,,,,
+3663.970209, 2773.259412,images/military.png,Military base has barracks with crates and AI,,images/Locations/militarybase.jpg,,,,,,,.5
+3816.001994, 4382.577254,images/military.png,Military building has a few crates,,images/Locations/military1.jpg,,,,,,,.5
+4900.563085, 2473.480084,images/military.png,Military building has a few crates,,images/Locations/coastmilitary.jpg,,,,,,,.5
+3100.362457, 3398.569994,images/military.png,Military buildings has a few crates,,images/Locations/militaryuboat.jpg,,,,,,,.5
 
 
 
