@@ -11,6 +11,20 @@
     <title>Xtract Map Reforger</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
+
+        .leaflet-container a.leaflet-popup-close-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: none;
+            text-align: center;
+            width: 24px;
+            height: 24px;
+            color: #ff0000;
+
+            font: 30px / 20px Tahoma, Verdana, sans-serif !important;
+        }
+        
         #togglemarkers{
             border: 1px solid rgb(0, 0, 0);
         }
@@ -93,8 +107,11 @@
             z-index: 99999 !important;
         }
 
+        .leaflet-popup-content-wrapper {
+            border: 1px solid black;
+        }
         .popup {
-
+        
             display: none;
             position: fixed;
             top: 50%;
@@ -756,27 +773,53 @@ map.on('drag', function () {
         // If there's a saved state, apply it
         if (isMapSwitched !== null) {
             mapImageSwitch.checked = (isMapSwitched === 'true');
+            
         }
 
         // Decide which image to use based on the checkbox state
         var currentImage = mapImageSwitch.checked ? imageUrl2 : imageUrl1;
+        var currentLineColor = mapImageSwitch.checked ? 'white' : 'black';
 
         // Create the map and image overlay here, using `currentImage` for the overlay
         var imageOverlay = L.imageOverlay(currentImage, imageBounds).addTo(map);
+
+
+
 
         // Add an event listener to the checkbox to save its state whenever it's changed
         mapImageSwitch.addEventListener('change', function(event) {
             if (event.target.checked) {
                 currentImage = imageUrl2;
+                currentLineColor = 'white';
             } else {
                 currentImage = imageUrl1;
+                currentLineColor = 'black';
             }
             map.removeLayer(imageOverlay);
             imageOverlay = L.imageOverlay(currentImage, imageBounds).addTo(map);
 
             // Save the state to localStorage
             localStorage.setItem('isMapSwitched', event.target.checked);
+
+            updateLineColors(currentLineColor);
         });
+
+                    // Function to update line colors
+function updateLineColors(color) {
+    for (var iconUrl in markersByImage) {
+        if (markersByImage.hasOwnProperty(iconUrl)) {
+            markersByImage[iconUrl].eachLayer(function(layer) {
+                if (layer instanceof L.Polyline) {
+                    layer.setStyle({ color: color });
+                }
+            });
+        }
+    }
+}
+
+// Set the initial line colors
+updateLineColors(currentLineColor);
+
     </script>
 
 </script>
@@ -886,18 +929,27 @@ function createMarkersAndLinesFromData(data) {
         var labelOffsetY = parseInt(parts[9]); // Parse label offset Y
         var scale = parseFloat(parts[12]); // Parse scale
 
+   // Default scale to 1 if not provided or NaN
+   if (isNaN(scale)) {
+            scale = 1;
+        }
+
+        // Calculate the scaled icon size
+        var baseIconSize = 32;
+        var scaledIconSize = baseIconSize * scale;
+
         var customIconOptions = {
-            html: `<div class="custom-icon-container">
+            html: `<div class="custom-icon-container" style="width: ${scaledIconSize}px; height: auto;">
                     <div class="marker-label-container" style="transform: translate(${labelOffsetX}px, ${labelOffsetY}px);"> <!-- Apply label offset -->
                         <div class="marker-label">${labelText}</div>
                     </div>
-                    <div class="marker-icon-wrapper" style="transform: scale(${scale});"> <!-- Apply scale transformation -->
-                        <img src="${iconUrl}" class="marker-icon">
+                    <div class="marker-icon-wrapper" style="width: 100%; height: 100%;"> <!-- Use 100% to maintain aspect ratio -->
+                        <img src="${iconUrl}" class="marker-icon" style="width: 100%; height: auto;">
                     </div>
                 </div>`,
-            iconSize: [32, 32], // Set default icon size
-            iconAnchor: [16, 16], // Adjust icon anchor to the bottom of the icon
-            popupAnchor: [0, -32], // Adjust popup anchor as needed
+            iconSize: [scaledIconSize, 'auto'], // Set scaled icon size
+            iconAnchor: [scaledIconSize / 2, scaledIconSize / 2], // Adjust icon anchor to the center of the icon
+            popupAnchor: [0, -scaledIconSize], // Adjust popup anchor as needed
             className: '' // Remove default class to avoid default styling
         };
 
@@ -932,6 +984,7 @@ markersByImage[iconUrl].addLayer(marker);
         if (!isNaN(destLat) && !isNaN(destLng)) {
             var line = L.polyline([[lat, lng], [destLat, destLng]], { color: 'black' });
             markersByImage[iconUrl].addLayer(line);
+            updateLineColors(currentLineColor);
         }
     }
 
