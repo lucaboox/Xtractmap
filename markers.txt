@@ -8,13 +8,13 @@
 3887.157569, 5561.834910,images/tier2.png,Tier 2 Boss Sniper Boss<br>Has Lots of crates in the church,,images/Locations/tier2photo.jpg,3994.502993,5640.087698,
 4395.561855, 5342.389638,images/tier3.png,Tier 3 Boss Harbor Boss<br>Has Lots of crates in the church,,images/Locations/tier3photo.jpg,4346.074724,5209.406861,
 4214.239803, 2963.823904,images/helicrash.png,Helicrash at airfield has multiple weapon crates,,images/Locations/helicrash1.jpg,,,,,,,1.3
-4186.853097, 4421.211764,images/helicrash.png,Helicrash has a few crates lots of AI,,images/Locations/helicrash2.jpg,4027.967124,4419.487658,,,,,1.3
-2357.636769, 4176.064176,images/factory.png,Factory building has a few crates,,images/Locations/factory.jpg,,,,
-3031.510045, 4952.410803,images/tent.png,Military tents has a few crates and some AI,,images/Locations/militarytents.jpg,,,
-4429.669183, 2749.180698,images/atc.png,ATC tower has a few crates and some AI,,images/Locations/atctower.jpg,,,,
-3663.970209, 2773.259412,images/military.png,Military base has barracks with crates and AI,,images/Locations/militarybase.jpg,,,,,,,.5
-3816.001994, 4382.577254,images/military.png,Military building has a few crates,,images/Locations/military1.jpg,,,,,,,.5
-4900.563085, 2473.480084,images/military.png,Military building has a few crates,,images/Locations/coastmilitary.jpg,,,,,,,.5
+4186.853097, 4421.211764,images/helicrash.png,Helicrash has a few crates<br>Military AI,,images/Locations/helicrash2.jpg,4027.967124,4419.487658,,,,,1.3
+2357.636769, 4176.064176,images/factory.png,Factory building has a few crates<br>Civilian AI,,images/Locations/factory.jpg,,,,
+3031.510045, 4952.410803,images/tent.png,Military tents has a few crates<br>Military AI,,images/Locations/militarytents.jpg,,,
+4429.669183, 2749.180698,images/atc.png,ATC tower has a few crates<br>Military and Civilian AI,,images/Locations/atctower.jpg,,,,
+3663.970209, 2773.259412,images/military.png,Military base has barracks with crates<br>Military AI,,images/Locations/militarybase.jpg,,,,,,,.5
+3816.001994, 4382.577254,images/military.png,Military building has a few crates<br>Military AI,,images/Locations/military1.jpg,,,,,,,.5
+4900.563085, 2473.480084,images/military.png,Military building has a few crates<br>Civilian AI,,images/Locations/coastmilitary.jpg,,,,,,,.5
 3100.362457, 3398.569994,images/military.png,Military buildings has a few crates,,images/Locations/militaryuboat.jpg,,,,,,,.5
 
 
